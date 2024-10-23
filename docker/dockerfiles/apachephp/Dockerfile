@@ -40,7 +40,6 @@ RUN a2enmod rewrite && \
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
-        wget \
         gnupg \
         nodejs && \
     apt-get autoremove --purge -y && \
