@@ -260,7 +260,7 @@ class Speaker implements NotifyPropertyInterface
      */
     public function getLabel()
     {
-        return $this->getFirstname() . " " . mb_strtoupper($this->getLastname());
+        return $this->getFirstname() . " " . ($this->getLastname() ? mb_strtoupper($this->getLastname()) : null);
     }
 
     /**
@@ -413,10 +413,14 @@ class Speaker implements NotifyPropertyInterface
     public function getCleanedTwitter()
     {
         $twitter = $this->getTwitter();
+        if (!$twitter) {
+            return null;
+        }
+
         $twitter = trim($twitter, '@');
         $twitter = preg_replace('!^https?://twitter.com/!', '', $twitter);
 
-        if (0 === strlen(trim($twitter))) {
+        if (!$twitter) {
             return null;
         }
 

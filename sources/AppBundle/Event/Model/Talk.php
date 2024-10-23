@@ -430,7 +430,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function getYoutubeId()
     {
-        if (0 === strlen($this->youTubeId)) {
+        if (empty($this->youTubeId)) {
             return null;
         }
 
@@ -475,7 +475,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function getSlidesUrl()
     {
-        if (0 === strlen($this->slidesUrl)) {
+        if (empty($this->slidesUrl)) {
             return null;
         }
 
@@ -591,7 +591,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function getBlogPostUrl()
     {
-        if (0 === strlen($this->blogPostUrl)) {
+        if (empty($this->blogPostUrl)) {
             return null;
         }
 
@@ -624,7 +624,7 @@ class Talk implements NotifyPropertyInterface
      */
     public function getInterviewUrl()
     {
-        if (0 === strlen($this->interviewUrl)) {
+        if (empty($this->interviewUrl)) {
             return null;
         }
 
@@ -895,12 +895,11 @@ class Talk implements NotifyPropertyInterface
         $explodedTweets = explode(PHP_EOL, $this->getTweets());
         $returnedTweets = [];
         foreach ($explodedTweets as $explodedTweet) {
-            $explodedTweet = trim($explodedTweet);
-            if (0 === strlen($explodedTweet)) {
+            if (empty($explodedTweet)) {
                 continue;
             }
 
-            $returnedTweets[] = $explodedTweet;
+            $returnedTweets[] = trim($explodedTweet);
         }
 
         return $returnedTweets;
