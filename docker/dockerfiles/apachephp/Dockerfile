@@ -41,6 +41,7 @@ RUN apt-get update && \
     apt-get install -y \
         build-essential \
         gnupg \
+        unzip \
         nodejs && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
