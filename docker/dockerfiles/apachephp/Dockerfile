@@ -37,7 +37,9 @@ RUN a2enmod rewrite && \
     echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
 
 # Install NodeJS
-RUN apt-get update && \
+RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+    echo "deb https://deb.nodesource.com/node_14.x $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/node.list && \
+    apt-get update && \
     apt-get install -y \
         build-essential \
         gnupg \
@@ -50,7 +52,8 @@ RUN apt-get update && \
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
-    apt-get install -y yarn && \
+    apt-get install -y \
+        yarn && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
 
