@@ -34,7 +34,7 @@ class Base_De_Donnees
             'database' => $database,
             'user' => $user,
             'password' => $password,
-            'port' => $port,
+            'port' => (int) $port,
             'timezone' => $timezone,
         ];
     }
