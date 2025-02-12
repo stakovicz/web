@@ -33,17 +33,14 @@ class HealthcheckController extends AbstractController
         $mysqlTing = $repo->getQuery('SELECT CURRENT_TIMESTAMP')->execute()['CURRENT_TIMESTAMP'];
         $mysqlTing = new DateTime($mysqlTing);
 
-        $hasDiff = $php->getTimestamp() !== $mysqlBdd->getTimestamp();
-        if (!$hasDiff) {
-            $hasDiff = $php->getTimestamp() !== $mysqlTing->getTimestamp();
-        }
+        $diff = $php->getTimestamp() !== $mysqlBdd->getTimestamp() || $php->getTimestamp() !== $mysqlTing->getTimestamp();
 
         return $this->render('admin/healthcheck.html.twig', [
             'dates' => [
                 'php' => $php->format(\DateTime::ATOM),
                 'mysql_bdd' => $mysqlBdd->format(\DateTime::ATOM),
                 'mysql_ting' => $mysqlTing->format(\DateTime::ATOM),
-                'diff' => $hasDiff
+                'diff' => $diff
             ],
             'versions' => [
                 'php' => phpversion(),
