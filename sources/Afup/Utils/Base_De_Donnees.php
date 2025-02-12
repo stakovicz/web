@@ -47,6 +47,7 @@ class Base_De_Donnees
                 mysqli_query($this->link, "SET time_zone = '" . $this->config['timezone'] . "'");
             }
             mysqli_set_charset($this->link, "utf8mb4");
+            mysqli_query($this->link, "SET time_zone = '" . getenv('DATABASE_TIMEZONE') . "'");
             $this->selectionnerBase($this->config['database']);
         }
         return $this->link;

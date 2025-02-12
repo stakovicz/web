@@ -1,4 +1,5 @@
 imports:
+    - { resource: config.php }
     - { resource: security.yml }
     - { resource: services.yml }
 
@@ -286,6 +287,10 @@ parameters:
                 forum_partenaire:
                     nom: 'Sponsors/Partenaires'
                     niveau: 'ROLE_ADMIN'
+                healthcheck:
+                    nom: 'Healthcheck'
+                    niveau: 'ROLE_ADMIN'
+                    url: '/admin/healthcheck'
         connexion:
             nom: 'Connexion'
             masquee: true
@@ -358,7 +363,7 @@ ting:
                 password: "%database_password%"
 
     databases_options:
-        main:
+        web:
             timezone: "%database_timezone%"
 
     repositories:
