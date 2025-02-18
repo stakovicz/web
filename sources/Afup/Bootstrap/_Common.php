@@ -27,12 +27,15 @@ $root = dirname(__DIR__, 3);
 
 require_once $root . '/vendor/autoload.php';
 
-// définitions des constantes
-define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
+if (!defined('AFUP_CHEMIN_RACINE')) {
+    // définitions des constantes
+    define('AFUP_CHEMIN_RACINE', $root . '/htdocs/');
 
-// Voir la classe Afup\Site\Association\Personnes_Morales
-define('AFUP_PERSONNES_PHYSIQUES', 0);
-define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 30);
+
+    // Voir la classe Afup\Site\Association\Personnes_Morales
+    define('AFUP_PERSONNES_PHYSIQUES', 0);
+    define('AFUP_COTISATION_PERSONNE_PHYSIQUE', 30);
+}
 
 date_default_timezone_set('Europe/Paris');
 

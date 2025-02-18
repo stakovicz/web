@@ -69,6 +69,9 @@ class Logs
     public static function obtenirTous($numero_page)
     {
         $instance =& self::_obtenirInstance();
+        if (!isset($instance->_nombre_logs_par_page)) {
+            return [];
+        }
         $depart = ($numero_page - 1) * $instance->_nombre_logs_par_page;
         $requete = 'SELECT';
         $requete .= '  afup_logs.*,';
@@ -94,7 +97,7 @@ class Logs
     {
         $instance =& self::_obtenirInstance();
         $nombre = $instance->_bdd->obtenirUn('SELECT COUNT(*) FROM afup_logs');
-        if (!$instance->_nombre_logs_par_page) {
+        if (!isset($instance->_nombre_logs_par_page)) {
             return 1;
         }
         $nombre = ceil($nombre / $instance->_nombre_logs_par_page);

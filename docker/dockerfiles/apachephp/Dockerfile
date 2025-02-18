@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.1-apache
 
 ARG ENABLE_XDEBUG=false
 ARG uid=1008
@@ -14,22 +14,21 @@ RUN apt-get update && \
     useradd -l -u ${uid} -g ${gid} -m -s /bin/bash localUser && \
     usermod -a -G www-data localUser
 
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 RUN if [ "$ENABLE_XDEBUG" = "true" ]; then echo ************ XDEBUG ENABLED **********; \
 else echo ------------ XDEBUG DISABLED ==========; fi
 
 # Install required PHP extensions for AFUP website and other management package
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-        libzip-dev \
-        libmcrypt4 \
-        libicu-dev \
         nodejs \
         npm \
     && \
-    docker-php-ext-install \
+    install-php-extensions \
+    	@composer \
+        apcu \
+        opcache \
         pdo_mysql \
         mysqli \
         zip \
@@ -39,7 +38,7 @@ RUN apt-get update && \
     && \
     # Install Yarn
     npm install -g yarn && \
-    if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.6.1 && docker-php-ext-enable xdebug; fi && \
+    if [ "$ENABLE_XDEBUG" = "true" ]; then pecl install xdebug-2.6.1 && install-php-extensions xdebug; fi && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
 

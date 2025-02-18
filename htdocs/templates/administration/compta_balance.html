@@ -51,7 +51,7 @@
                         </a>
                     </td>
                 </tr>
-                {if ($smarty.get.details==$ecriture.idevenement) }
+                {if ($smarty.get.details|default:''==$ecriture.idevenement) }
                 <tr>
                     <td colspan="4">
                         <table class="ui table striped compact celled">

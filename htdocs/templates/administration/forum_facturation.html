@@ -41,12 +41,12 @@
     <table class="ui table striped compact celled">
         <thead>
             <tr>
-                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_facture'}desc{else}asc{/if}">Date facture</a></th>
-                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'reference'}desc{else}asc{/if}">Référence</a></th>
-                <th><a href="index.php?page=forum_facturation&amp;tri=societe&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'societe'}desc{else}asc{/if}">Société / personne physique</a></th>
-                <th class="right aligned"><a href="index.php?page=forum_facturation&amp;tri=montant&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'montant'}desc{else}asc{/if}">Montant</a></th>
-                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
-                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=facturation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Facturation</a></th>
+                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'date_facture'}desc{else}asc{/if}">Date facture</a></th>
+                <th><a href="index.php?page=forum_facturation&amp;tri=date_facture&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'reference'}desc{else}asc{/if}">Référence</a></th>
+                <th><a href="index.php?page=forum_facturation&amp;tri=societe&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'societe'}desc{else}asc{/if}">Société / personne physique</a></th>
+                <th class="right aligned"><a href="index.php?page=forum_facturation&amp;tri=montant&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'montant'}desc{else}asc{/if}">Montant</a></th>
+                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=etat&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Etat</a></th>
+                <th class="center aligned"><a href="index.php?page=forum_facturation&amp;tri=facturation&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'etat'}desc{else}asc{/if}">Facturation</a></th>
                 <th></th>
             </tr>
         </thead>

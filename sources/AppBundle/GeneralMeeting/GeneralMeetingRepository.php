@@ -32,18 +32,15 @@ ORDER BY apag.date DESC
 SQL
         );
 
-        return array_map(static fn (array $row) => DateTimeImmutable::createFromFormat('U', $row['date']), $query->fetchAll());
+        return array_map(static fn (array $row) => new DateTimeImmutable('@'.$row['date']), $query->fetchAll());
     }
 
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getLatestDate()
+    public function getLatestDate(): ?DateTimeImmutable
     {
         $query = $this->connection->executeQuery('SELECT MAX(date) maxDate FROM afup_presences_assemblee_generale LIMIT 1');
         $row = $query->fetch();
 
-        return null !== $row['maxDate'] ? DateTimeImmutable::createFromFormat('U', $row['maxDate']) : null;
+        return $row['maxDate'] ?? new DateTimeImmutable('@'.$row['maxDate']);
     }
 
     public function hasGeneralMeetingPlanned(DateTimeInterface $currentDate = null): bool
@@ -78,11 +75,11 @@ SQL
         return is_array($row) ? new GeneralMeeting(
             (int) $row['id'],
             (int) $row['id_personne_physique'],
-            DateTimeImmutable::createFromFormat('U', $row['date']),
+            DateTimeImmutable::createFromFormat('U', (string) $row['date']),
             (int) $row['presence'],
             (int) $row['id_personne_avec_pouvoir'],
-            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', $row['date_consultation']) : null,
-            $row['date_modification'] ? DateTimeImmutable::createFromFormat('U', $row['date_modification']) : null
+            $row['date_consultation'] ? DateTimeImmutable::createFromFormat('U', (string) $row['date_consultation']) : null,
+            $row['date_modification'] ? DateTimeImmutable::createFromFormat('U', (string) $row['date_modification']) : null
         ) : null;
     }
 

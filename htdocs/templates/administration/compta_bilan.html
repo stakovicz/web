@@ -57,7 +57,7 @@
                                         </a>
                                     </td>
                                 </tr>
-                                {if ($smarty.get.details==$debits.id) }
+                                {if ($smarty.get.details|default:''==$debits.id) }
                                     <tr>
                                         <td colspan="3">
                                             <table class="ui table striped compact celled">
@@ -133,7 +133,7 @@
                                         </a>
                                     </td>
                                 </tr>
-                                {if ($smarty.get.details==$credits.id) }
+                                {if ($smarty.get.details|default:''==$credits.id) }
                                     <tr>
                                         <td colspan='3'>
                                             <table class="ui table striped very compact celled">

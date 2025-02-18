@@ -30,8 +30,8 @@
         <thead>
             <tr>
                 <th data-tf-filter-type="select">Année</th>
-                <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
-                <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
+                <th><a href="index.php?page=compta_devis&amp;tri=date_consultation&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Date</a></th>
+                <th><a href="index.php?page=compta_devis&amp;tri=evenement&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'date_consultation'}desc{else}asc{/if}">Clients</a></th>
                 <th>Ville</th>
                 <th class="right aligned">Numero facture</th>
                 <th>Référence client</th>
