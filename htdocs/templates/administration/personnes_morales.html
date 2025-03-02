@@ -39,9 +39,9 @@
             <thead>
                 <tr>
                     <!-- th width="20px">&nbsp;</th -->
-                    <th align="left"><a href="index.php?page=personnes_morales&amp;tri=raison_sociale&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'raison_sociale'}desc{else}asc{/if}">Raison sociale</a></th>
-                    <th style="text-align: center"><a href="index.php?page=personnes_morales&amp;tri=etat&amp;sens={if $smarty.get.sens == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
-                    <th style="text-align: center;"><a href="index.php?page=personnes_morales&amp;tri=actifs&amp;sens={if $smarty.get.sens == 'desc' && $smarty.get.tri == 'actifs'}desc{else}asc{/if}">Actifs</a></th>
+                    <th align="left"><a href="index.php?page=personnes_morales&amp;tri=raison_sociale&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'raison_sociale'}desc{else}asc{/if}">Raison sociale</a></th>
+                    <th style="text-align: center"><a href="index.php?page=personnes_morales&amp;tri=etat&amp;sens={if $smarty.get.sens|default:'' == 'asc' && $smarty.get.tri == 'etat'}asc{else}desc{/if}">Etat</a></th>
+                    <th style="text-align: center;"><a href="index.php?page=personnes_morales&amp;tri=actifs&amp;sens={if $smarty.get.sens|default:'' == 'desc' && $smarty.get.tri == 'actifs'}desc{else}asc{/if}">Actifs</a></th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
