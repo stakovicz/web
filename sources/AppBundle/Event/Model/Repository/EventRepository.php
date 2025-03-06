@@ -179,6 +179,31 @@ SQL;
     }
 
     /**
+     * Recherche l'événement de l'année dernière base sur le nommage :
+     * "AFUP Day 2025 Lille" > "AFUP Day 2024 Lille"
+     *
+     * Sinon on prend le dernier événement en date
+     *
+     * @param Event $event
+     * @return Event|null
+     */
+    public function getLastYearEvent(Event $event): ?Event
+    {
+        // Recherche de l'année dans le titre
+        preg_match('#\d{4}#', $event->getTitle(), $matches);
+        $year = $matches[0];
+
+        $searchTitle = str_replace($year, $year-1, $event->getTitle());
+
+        $lastYearEvent = $this->getBy(['title' => $searchTitle])->first();
+        if (!$lastYearEvent) {
+            return $this->getPreviousEvents(1)->first();
+        }
+
+        return $lastYearEvent;
+    }
+
+    /**
      * @param ?int $excludedEventId
      *
      * @throws QueryException
@@ -186,7 +211,7 @@ SQL;
      */
     public function getAllEventsExcept(int $excludedEventId = null): CollectionInterface
     {
-        if($excludedEventId === null) {
+        if ($excludedEventId === null) {
             return $this->getAll();
         }
 

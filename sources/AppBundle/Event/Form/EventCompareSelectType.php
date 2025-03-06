@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace AppBundle\Event\Form;
 
+use AppBundle\Event\Model\Event;
 use AppBundle\Event\Model\Repository\EventRepository;
-use CCMBenchmark\Ting\Exception;
-use CCMBenchmark\Ting\Query\QueryException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -15,44 +15,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventCompareSelectType extends AbstractType
 {
-    /** @var EventRepository */
-    private $eventRepository;
+    private EventRepository $eventRepository;
 
     public function __construct(EventRepository $eventRepository)
     {
         $this->eventRepository = $eventRepository;
     }
 
-    /**
-     * @throws QueryException
-     * @throws Exception
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $eventId = $builder->getData()['id'] ?? null;
-        $excludedEventId = $builder->getData()['compared_event_id'] ?? null;
-        $events = $this->eventRepository->getAllEventsExcept($eventId);
-
-        dump($events->first());
 
         $builder
-            ->add('compared_event_id', ChoiceType::class,
-                [
-                    'choice_label' => 'title',
-                    'choice_value' => 'id',
-                    'data' => "2",
-                    'choices' => $events,
-                ]
-            )
-            ->setMethod(Request::METHOD_GET)
-            ->add('id', HiddenType::class, [
-                'data' => $eventId,
+            ->add('compared_event_id', ChoiceType::class, [
+                'choices' => $this->buildChoices($eventId),
             ])
+            ->add('id', HiddenType::class)
+            ->setMethod(Request::METHOD_GET)
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false
@@ -61,6 +44,18 @@ class EventCompareSelectType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'compare_event';
+        return '';
+    }
+
+    private function buildChoices($eventId): array
+    {
+        $events = $this->eventRepository->getAllEventsExcept($eventId);
+
+        $choices = [];
+        /** @var Event $event */
+        foreach ($events as $event) {
+            $choices[$event->getTitle()] = (int) $event->getId();
+        }
+        return $choices;
     }
 }
