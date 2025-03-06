@@ -40,8 +40,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getNextEvents()
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut')
-        ;
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum WHERE date_debut > NOW() ORDER BY date_debut');
 
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
 
@@ -54,8 +53,7 @@ class EventRepository extends Repository implements MetadataInitializer
     public function getLastEvent()
     {
         $query = $this
-            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC, id DESC')
-        ;
+            ->getQuery('SELECT id, path, titre, text, date_debut, date_fin, date_fin_appel_conferencier, date_fin_vente FROM afup_forum ORDER BY date_debut DESC, id DESC');
 
         return $query->query($this->getCollection(new HydratorSingleObject()))->first();
     }
@@ -76,8 +74,7 @@ class EventRepository extends Repository implements MetadataInitializer
                                )
                              ORDER BY date_debut LIMIT 1')
             ->setParams(['user_github_id' => $githubUser->getId()])
-            ->query($this->getCollection(new HydratorSingleObject()))
-        ;
+            ->query($this->getCollection(new HydratorSingleObject()));
 
         if ($events->count() === 0) {
             return null;
@@ -97,12 +94,12 @@ LEFT JOIN afup_inscription_forum i ON (f.id = i.id_forum)
 GROUP BY f.id, f.titre, f.path, f.nb_places, f.date_debut, f.date_fin, f.date_fin_appel_conferencier, f.date_fin_vente
 ORDER BY date_debut desc;
 ENDSQL;
-        $sql = sprintf($sql, $id === null ? '':'WHERE f.id = :id');
+        $sql = sprintf($sql, $id === null ? '' : 'WHERE f.id = :id');
 
 
         $query = $this->getQuery($sql);
         if ($id !== null) {
-            $query->setParams(['id'=>$id]);
+            $query->setParams(['id' => $id]);
         }
         return $query->query($this->getCollection(new HydratorArray()));
     }
@@ -156,8 +153,7 @@ SQL;
     public function getCurrentEvent()
     {
         $query = $this
-            ->getQuery('SELECT id, path FROM afup_forum WHERE (date_debut > NOW() OR (NOW() BETWEEN date_debut AND DATE_ADD(date_fin, INTERVAL 1 DAY))) ORDER BY date_debut LIMIT 1')
-        ;
+            ->getQuery('SELECT id, path FROM afup_forum WHERE (date_debut > NOW() OR (NOW() BETWEEN date_debut AND DATE_ADD(date_fin, INTERVAL 1 DAY))) ORDER BY date_debut LIMIT 1');
         $events = $query->query($this->getCollection(new HydratorSingleObject()));
         if ($events->count() === 0) {
             return null;
@@ -178,46 +174,26 @@ SQL;
         return $query->query($this->getCollection(new HydratorSingleObject()));
     }
 
-    /**
-     * Recherche l'événement de l'année dernière base sur le nommage :
-     * "AFUP Day 2025 Lille" > "AFUP Day 2024 Lille"
-     *
-     * Sinon on prend le dernier événement en date
-     *
-     * @param Event $event
-     * @return Event|null
-     */
-    public function getLastYearEvent(Event $event): ?Event
+    public function getLastYearEvent(Event $event): Event
     {
-        // Recherche de l'année dans le titre
+        // Recherche de l'année dans le nom
         preg_match('#\d{4}#', $event->getTitle(), $matches);
-        $year = $matches[0];
+        if (!$matches) {
 
-        $searchTitle = str_replace($year, $year-1, $event->getTitle());
+            return $this->getLastEvent();
+        }
 
+        $year = (int) $matches[0];
+        $lastYear = $year - 1;
+        $searchTitle = str_replace((string) $year, (string) $lastYear, $event->getTitle());
+
+        // Recherche par nom (N-1)
         $lastYearEvent = $this->getBy(['title' => $searchTitle])->first();
         if (!$lastYearEvent) {
-            return $this->getPreviousEvents(1)->first();
+            $lastYearEvent = $this->getPreviousEvents(1)->first();
         }
 
         return $lastYearEvent;
-    }
-
-    /**
-     * @param ?int $excludedEventId
-     *
-     * @throws QueryException
-     * @throws Exception
-     */
-    public function getAllEventsExcept(int $excludedEventId = null): CollectionInterface
-    {
-        if ($excludedEventId === null) {
-            return $this->getAll();
-        }
-
-        return  $this->getQuery('SELECT * FROM afup_forum WHERE id <> :id ORDER BY date_debut DESC')
-            ->setParams(['id' => $excludedEventId])
-            ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
@@ -242,7 +218,7 @@ SQL;
             ->addField([
                 'columnName' => 'id',
                 'fieldName' => 'id',
-                'primary'       => true,
+                'primary' => true,
                 'autoincrement' => true,
                 'type' => 'int'
             ])
@@ -404,8 +380,7 @@ SQL;
                 'fieldName' => 'transportInformationEnabled',
                 'type' => 'bool',
                 'serializer' => Boolean::class
-            ])
-        ;
+            ]);
 
         return $metadata;
     }

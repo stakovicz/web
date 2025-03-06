@@ -5,34 +5,49 @@ declare(strict_types=1);
 namespace AppBundle\Event\Form;
 
 use AppBundle\Event\Model\Event;
-use AppBundle\Event\Model\Repository\EventRepository;
+use CCMBenchmark\Ting\Repository\Collection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventCompareSelectType extends AbstractType
 {
-    private EventRepository $eventRepository;
-
-    public function __construct(EventRepository $eventRepository)
-    {
-        $this->eventRepository = $eventRepository;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $eventId = $builder->getData()['id'] ?? null;
-
+        $eventId = $builder->getData()['event_id'];
+        $choices = $this->buildChoices($options['events']);
         $builder
-            ->add('compared_event_id', ChoiceType::class, [
-                'choices' => $this->buildChoices($eventId),
+            ->add('event_id', ChoiceType::class, [
+                'choices' => $choices,
+                'group_by' => static function ($choice, $key) {
+                    return self::groupBy($key);
+                },
             ])
-            ->add('id', HiddenType::class)
-            ->setMethod(Request::METHOD_GET)
-        ;
+            ->add('compared_event_id', ChoiceType::class, [
+                'choices' => $choices,
+                'choice_attr' => function ($choice, $key, $value) use ($eventId) {
+                    if ($choice === $eventId) {
+                        return ['disabled' => true];
+                    }
+
+                    return [];
+                },
+                'group_by' => static function ($choice, $key) {
+                    return self::groupBy($key);
+                },
+            ])
+            ->setMethod(Request::METHOD_GET);
+    }
+
+    private static function groupBy($key): string
+    {
+        if (preg_match('/\d{4}/', $key, $matches)) {
+            return $matches[0];
+        }
+
+        return '';
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -40,6 +55,10 @@ class EventCompareSelectType extends AbstractType
         $resolver->setDefaults([
             'csrf_protection' => false
         ]);
+        $resolver->setRequired([
+            'events',
+        ]);
+        $resolver->setAllowedTypes('events', [Collection::class]);
     }
 
     public function getBlockPrefix(): string
@@ -47,14 +66,21 @@ class EventCompareSelectType extends AbstractType
         return '';
     }
 
-    private function buildChoices($eventId): array
+    /**
+     * @param Collection<Event> $events
+     * @return array<string,int>
+     */
+    private function buildChoices(Collection $events): array
     {
-        $events = $this->eventRepository->getAllEventsExcept($eventId);
+        /** @var array<Event> $data */
+        $data = iterator_to_array($events);
+        usort($data, static function (Event $a, Event $b) {
+            return $a->getDateStart() <= $b->getDateStart();
+        });
 
         $choices = [];
-        /** @var Event $event */
-        foreach ($events as $event) {
-            $choices[$event->getTitle()] = (int) $event->getId();
+        foreach ($data as $event) {
+            $choices[$event->getTitle()] = $event->getId();
         }
         return $choices;
     }

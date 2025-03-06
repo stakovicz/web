@@ -52,22 +52,21 @@ class StatsAction
 
     public function __invoke(Request $request): Response
     {
-        $event = $this->eventActionHelper->getEventById($request->query->get('id'));
+        $event = $this->eventActionHelper->getEventById($request->query->get('event_id'));
         if ($comparedEventId = $request->query->get('compared_event_id')) {
             $comparedEvent = $this->eventActionHelper->getEventById($comparedEventId, false);
         } else {
             $comparedEvent = $this->eventRepository->getLastYearEvent($event);
         }
 
-        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
-
-        $comparedSerieName = $comparedEvent->getTitle();
-
         $comparedEventForm = $this->formFactory->create(EventCompareSelectType::class, [
-            'id' => $event->getId(),
+            'event_id' => $event->getId(),
             'compared_event_id' => $comparedEvent->getId(),
-        ])->createView();
+        ], [
+            'events' => $this->eventRepository->getAll()
+        ]);
 
+        $legacyInscriptions = $this->legacyModelFactory->createObject(Inscriptions::class);
         $stats = $legacyInscriptions->obtenirSuivi($event->getId(), $comparedEvent->getId());
         $ticketsDayOne = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_ONE, $event);
         $ticketsDayTwo = $this->ticketRepository->getPublicSoldTicketsByDay(Ticket::DAY_TWO, $event);
@@ -101,7 +100,7 @@ class StatsAction
                     'data' => array_values(array_map(static fn ($item) => $item['n'], $stats['suivi'])),
                 ],
                 [
-                    'name' => $comparedSerieName,
+                    'name' => $comparedEvent->getTitle(),
                     'data' => array_values(array_map(static fn ($item) => $item['n_1'], $stats['suivi'])),
                 ],
             ],
@@ -161,12 +160,11 @@ class StatsAction
             'pieChartConf' => $pieChartConf,
             'stats' => $stats,
             'seats' => [
-                'available' => $event === null ? null: $event->getSeats(),
+                'available' => $event->getSeats(),
                 'one' => $ticketsDayOne,
                 'two' => $ticketsDayTwo,
             ],
-            'event_select_form' => $this->formFactory->create(EventSelectType::class, $event)->createView(),
-            'event_compare_form' => $comparedEventForm,
+            'event_compare_form' => $comparedEventForm->createView(),
         ]));
     }
 }
