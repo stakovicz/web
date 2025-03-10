@@ -38,3 +38,16 @@ Feature: Administration - Partie Personnes physiques - cotisations
     Then I should see "Personnes physiques"
     And I follow "Export des personnes physiques actives et company managers en CSV"
     Then the response header "Content-disposition" should equal 'attachment; filename=export_personnes_physiques_actives_managers.csv'
+
+  @reloadDbWithTestData
+  Scenario: On test l'ajout manuel d'une cotisation
+    Given I am logged in as admin and on the Administration
+    And I follow "Personnes physiques"
+    When I follow the button of tooltip "Gérer les cotisations de Personne Paul"
+    And I follow "Ajouter"
+    Then I should see "Ajouter une cotisation"
+    When I fill in "montant" with "12.34"
+    # espèce
+    And I select "0" from "type_reglement"
+    And I press "Ajouter"
+    Then I should see "pour Personne Paul a bien été ajoutée"

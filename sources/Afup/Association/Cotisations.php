@@ -575,9 +575,9 @@ class Cotisations
      *
      * @param    int $type_personne Identifiant du type de personne
      * @param    int $id_personne Identifiant de la personne
-     * @return    int                    Timestamp de la date de la cotisation
+     * @return   int Timestamp de la date de la cotisation
      */
-    public function obtenirDateDebut($type_personne, $id_personne)
+    public function obtenirDateDebut($type_personne, $id_personne): int
     {
         $requete = 'SELECT';
         $requete .= '  date_fin ';
@@ -592,10 +592,10 @@ class Cotisations
         $date_debut = $this->_bdd->obtenirUn($requete);
 
         if ($date_debut !== false) {
-            return $date_debut;
-        } else {
-            return time();
+            return (int) $date_debut;
         }
+
+        return time();
     }
 
     /**
