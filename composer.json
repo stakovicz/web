@@ -1,187 +1,200 @@
 {
-  "name": "afup/web",
-  "description": "Main repository for afup website",
-  "type": "project",
-  "require": {
-    "php": "7.4.* | 8.1.*",
-    "ext-curl": "*",
-    "ext-dom": "*",
-    "ext-gd": "*",
-    "ext-json": "*",
-    "ext-libxml": "*",
-    "ext-openssl": "*",
-    "ext-pdo": "*",
-    "algolia/algoliasearch-client-php": "^3.4",
-    "beberlei/assert": "^2.9",
-    "captioning/captioning": "^2.6",
-    "ccmbenchmark/ting_bundle": "^3.7",
-    "cocur/slugify": "^2.3",
-    "cuyz/valinor": "^0.17.1",
-    "doctrine/dbal": "^2.5",
-    "drewm/mailchimp-api": "^2.5",
-    "ekino/newrelic-bundle": "^2.4",
-    "erusev/parsedown": "^1.6",
-    "excelwebzone/recaptcha-bundle": "^1.5",
-    "friendsofpear/pear_exception": "0.0.*",
-    "geocoder-php/google-maps-provider": "^4.7",
-    "jms/serializer-bundle": "5.*",
-    "knpuniversity/oauth2-client-bundle": "^2.17",
-    "laminas/laminas-feed": "^2.18",
-    "league/iso3166": "^4.0",
-    "league/oauth2-github": "^3.1",
-    "myclabs/php-enum": "^1.8",
-    "nyholm/psr7": "^1.8",
-    "pear/pear": "^1.10",
-    "phpmailer/phpmailer": "^6.9",
-    "phpoffice/phpspreadsheet": "^1.6",
-    "presta/sitemap-bundle": "3.3.0",
-    "psr/clock": "^1.0",
-    "robmorgan/phinx": "^0.14.0",
-    "sabre/vobject": "^4.1",
-    "setasign/fpdf": "^1.8",
-    "smarty/smarty": "^5.4",
-    "symfony/asset": "^5.4",
-    "symfony/console": "^5.4",
-    "symfony/expression-language": "^5.4",
-    "symfony/form": "^5.4",
-    "symfony/framework-bundle": "^5.4",
-    "symfony/http-client": "^5.4",
-    "symfony/intl": "^5.4",
-    "symfony/lock": "^5.4",
-    "symfony/mime": "^5.4",
-    "symfony/monolog-bundle": "^3.1",
-    "symfony/security-bundle": "^5.4",
-    "symfony/string": "^5.4",
-    "symfony/translation": "^5.4",
-    "symfony/twig-bundle": "^5.4",
-    "symfony/validator": "^5.4",
-    "symfony/yaml": "^5.4",
-    "twig/extensions": "^1.4",
-    "twig/twig": "^2.16",
-    "znk3r/html_common": "*",
-    "znk3r/html_quickform": "4.0.2"
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "@php bin/console cache:clear --no-warmup",
-      "@php bin/console assets:install --relative htdocs"
+    "name": "afup/web",
+    "description": "Main repository for afup website",
+    "type": "project",
+    "require": {
+        "php": "7.4.* | 8.1.*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
+        "algolia/algoliasearch-client-php": "^3.4",
+        "beberlei/assert": "^2.9",
+        "captioning/captioning": "^2.6",
+        "ccmbenchmark/ting_bundle": "^3.7",
+        "cocur/slugify": "^2.3",
+        "cuyz/valinor": "^0.17.1",
+        "cweagans/composer-patches": "^1.7",
+        "doctrine/dbal": "^2.5",
+        "drewm/mailchimp-api": "^2.5",
+        "ekino/newrelic-bundle": "^2.4",
+        "erusev/parsedown": "^1.6",
+        "excelwebzone/recaptcha-bundle": "^1.5",
+        "friendsofpear/pear_exception": "0.0.*",
+        "geocoder-php/google-maps-provider": "^4.7",
+        "jms/serializer-bundle": "5.*",
+        "knpuniversity/oauth2-client-bundle": "^2.17",
+        "laminas/laminas-feed": "^2.18",
+        "league/iso3166": "^4.0",
+        "league/oauth2-github": "^3.1",
+        "myclabs/php-enum": "^1.8",
+        "nyholm/psr7": "^1.8",
+        "pear/pear": "^1.10",
+        "phpmailer/phpmailer": "^6.9",
+        "phpoffice/phpspreadsheet": "^1.6",
+        "presta/sitemap-bundle": "3.3.0",
+        "psr/clock": "^1.0",
+        "robmorgan/phinx": "^0.14.0",
+        "sabre/vobject": "^4.1",
+        "setasign/fpdf": "^1.8",
+        "smarty/smarty": "^5.4",
+        "symfony/asset": "^5.4",
+        "symfony/console": "^5.4",
+        "symfony/expression-language": "^5.4",
+        "symfony/form": "^5.4",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/http-client": "^5.4",
+        "symfony/intl": "^5.4",
+        "symfony/lock": "^5.4",
+        "symfony/mime": "^5.4",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/security-bundle": "^5.4",
+        "symfony/string": "^5.4",
+        "symfony/translation": "^5.4",
+        "symfony/twig-bundle": "^5.4",
+        "symfony/validator": "^5.4",
+        "symfony/yaml": "^5.4",
+        "twig/extensions": "^1.4",
+        "twig/twig": "^2.16",
+        "znk3r/html_common": "*",
+        "znk3r/html_quickform": "4.0.2"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php bin/console cache:clear --no-warmup",
+            "@php bin/console assets:install --relative htdocs"
+        ],
+        "post-update-cmd": [
+            "@php bin/console cache:clear --no-warmup",
+            "@php bin/console assets:install --relative htdocs"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin",
+        "secure-http": false,
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "php-http/discovery": true
+        }
+    },
+    "extra": {
+        "patches": {
+            "znk3r/html_quickform": [
+                "patches/znk3r-html-quickform-html-quickform-php.patch"
+            ]
+        },
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "htdocs",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-tests-dir": "tests"
+    },
+    "autoload": {
+        "psr-4": {
+            "Afup\\Site\\": "sources/Afup/",
+            "AppBundle\\": "sources/AppBundle/",
+            "PlanetePHP\\": "sources/PlanetePHP/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ],
+        "files": [
+            "sources/Afup/Bootstrap/_Common.php",
+            "sources/Afup/Bootstrap/commonStart.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Afup\\Site\\Tests\\": "tests/unit/Afup/",
+            "Afup\\Tests\\Support\\": "tests/support/",
+            "AppBundle\\Tests\\": "tests/unit/AppBundle/",
+            "PlanetePHP\\IntegrationTests\\": "tests/integration/PlanetePHP/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Afup",
+            "email": "outils@afup.org"
+        }
     ],
-    "post-update-cmd": [
-      "@php bin/console cache:clear --no-warmup",
-      "@php bin/console assets:install --relative htdocs"
-    ]
-  },
-  "config": {
-    "bin-dir": "bin",
-    "secure-http": false,
-    "sort-packages": true,
-    "allow-plugins": {
-      "php-http/discovery": true
-    }
-  },
-  "extra": {
-    "symfony-app-dir": "app",
-    "symfony-web-dir": "htdocs",
-    "symfony-bin-dir": "bin",
-    "symfony-var-dir": "var",
-    "symfony-tests-dir": "tests"
-  },
-  "autoload": {
-    "psr-4": {
-      "Afup\\Site\\": "sources/Afup/",
-      "AppBundle\\": "sources/AppBundle/",
-      "PlanetePHP\\": "sources/PlanetePHP/"
+    "minimum-stability": "stable",
+    "require-dev": {
+        "behat/behat": "^3.15",
+        "behat/mink-goutte-driver": "^2.0",
+        "fakerphp/faker": "^1.24",
+        "friends-of-behat/mink-extension": "^2.7",
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "ifsnop/mysqldump-php": "^2.12",
+        "phpunit/phpunit": "^9.6",
+        "rector/rector": "^2.0",
+        "smalot/pdfparser": "^0.19.0",
+        "symfony/debug-bundle": "^5.4",
+        "symfony/web-profiler-bundle": "^5.4",
+        "symplify/vendor-patches": "^11.4"
     },
-    "classmap": [
-      "app/AppKernel.php",
-      "app/AppCache.php"
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "znk3r/html_quickform",
+                "version": "4.0.2",
+                "dist": {
+                    "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
+                    "type": "zip"
+                },
+                "autoload": {
+                    "classmap": [
+                        "HTML/"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "znk3r/html_common",
+                "version": "v2.0.0",
+                "dist": {
+                    "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
+                    "type": "zip"
+                },
+                "autoload": {
+                    "classmap": [
+                        "HTML/"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "pear/pear",
+                "version": "v1.10.9",
+                "dist": {
+                    "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip",
+                    "type": "zip"
+                },
+                "autoload": {
+                    "classmap": [
+                        "PEAR.php",
+                        "PEAR/"
+                    ]
+                }
+            }
+        }
     ],
-    "files": [
-      "sources/Afup/Bootstrap/_Common.php",
-      "sources/Afup/Bootstrap/commonStart.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Afup\\Site\\Tests\\": "tests/unit/Afup/",
-      "Afup\\Tests\\Support\\": "tests/support/",
-      "AppBundle\\Tests\\": "tests/unit/AppBundle/",
-      "PlanetePHP\\IntegrationTests\\": "tests/integration/PlanetePHP/"
+    "replace": {
+        "symfony/polyfill-php54": "*",
+        "symfony/polyfill-php55": "*",
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*"
     }
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Afup",
-      "email": "outils@afup.org"
-    }
-  ],
-  "minimum-stability": "stable",
-  "require-dev": {
-    "behat/behat": "^3.15",
-    "behat/mink-goutte-driver": "^2.0",
-    "fakerphp/faker": "^1.24",
-    "friends-of-behat/mink-extension": "^2.7",
-    "friendsofphp/php-cs-fixer": "^3.75",
-    "ifsnop/mysqldump-php": "^2.12",
-    "phpunit/phpunit": "^9.6",
-    "rector/rector": "^2.0",
-    "smalot/pdfparser": "^0.19.0",
-    "symfony/debug-bundle": "^5.4",
-    "symfony/web-profiler-bundle": "^5.4"
-  },
-  "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "znk3r/html_quickform",
-        "version": "4.0.2",
-        "dist": {
-          "url": "https://github.com/macintoshplus/HTML_QuickForm/archive/v4.0.2.zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "classmap": ["HTML/"]
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "znk3r/html_common",
-        "version": "v2.0.0",
-        "dist": {
-          "url": "https://github.com/znk3r/HTML_Common/archive/v2.0.0.zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "classmap": ["HTML/"]
-        }
-      }
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "pear/pear",
-        "version": "v1.10.9",
-        "dist": {
-          "url": "https://github.com/pear/pear-core/archive/v1.10.9.zip",
-          "type": "zip"
-        },
-        "autoload": {
-          "classmap": [
-            "PEAR.php", "PEAR/"
-          ]
-        }
-      }
-    }
-  ],
-  "replace": {
-    "symfony/polyfill-php54": "*",
-    "symfony/polyfill-php55": "*",
-    "symfony/polyfill-php56": "*",
-    "symfony/polyfill-php72": "*",
-    "symfony/polyfill-php73": "*",
-    "symfony/polyfill-php74": "*"
-  }
 }
