@@ -102,16 +102,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache Docker images.
-        uses: ScribeMD/docker-cache@0.5.0
+      - name: Copy env file
+        run: cp .env.dist .env
+
+      - name: Build Docker images
+        uses: docker/bake-action@v6
         with:
-          key: |
-            docker-${{ runner.os }}-${{ hashFiles(
-              'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
-            ) }}
+          pull: false
+          load: false
+          files: |
+            compose.yml
+          set: |
+            dbtest.cache-from=type=gha,scope=dbtest-${{ hashFiles('./docker/**') }}
+            dbtest.cache-to=type=gha,scope=dbtest-${{ hashFiles('./docker/**') }},mode=max
+            apachephp.cache-from=type=gha,scope=apachephp-${{ hashFiles('./docker/**') }}
+            apachephp.cache-to=type=gha,scope=apachephp-${{ hashFiles('./docker/**') }},mode=max
 
       - name: Delete symfony cache
         run: rm -rf var/cache/test
@@ -129,6 +134,13 @@ jobs:
           name: Functional tests - deprecated log - report
           path: var/logs/test.deprecations_grouped.log
 
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        continue-on-error: true
+        with:
+          name: Functional tests - log - report
+          path: var/logs/test.log
+
   integration:
     name: "Integration tests"
     runs-on: ubuntu-22.04
@@ -136,16 +148,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache Docker images.
-        uses: ScribeMD/docker-cache@0.5.0
+      - name: Copy env file
+        run: cp .env.dist .env
+
+      - name: Build Docker images
+        uses: docker/bake-action@v6
         with:
-          key: |
-            docker-${{ runner.os }}-${{ hashFiles(
-              'compose.yml',
-              'docker/dockerfiles/apachephp/Dockerfile',
-              'docker/dockerfiles/mysql/Dockerfile',
-              'docker/dockerfiles/mysqltest/Dockerfile'
-            ) }}
+          pull: true
+          load: true
+          files: |
+            compose.yml
+          set: |
+            dbtest.cache-from=type=gha,scope=dbtest-${{ hashFiles('./docker/**') }}
+            dbtest.cache-to=type=gha,scope=dbtest-${{ hashFiles('./docker/**') }},mode=max
+            apachephp.cache-from=type=gha,scope=apachephp-${{ hashFiles('./docker/**') }}
+            apachephp.cache-to=type=gha,scope=apachephp-${{ hashFiles('./docker/**') }},mode=max
 
       - name: Delete symfony cache
         run: rm -rf var/cache/test
