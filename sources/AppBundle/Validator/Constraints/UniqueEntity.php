@@ -7,10 +7,7 @@ namespace AppBundle\Validator\Constraints;
 use CCMBenchmark\Ting\Repository\Repository;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class UniqueEntity extends Constraint
 {
     public string $message = 'Another entity exists for this data: {{ data }}';

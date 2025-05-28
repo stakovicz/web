@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Behat\Hook\BeforeScenario;
+use Behat\Step\Given;
 use Afup\Tests\Support\DatabaseManager;
 use AppBundle\Event\Model\Event;
 use Behat\Behat\Context\Context;
@@ -30,9 +32,7 @@ class FeatureContext implements Context
         $this->databaseManager = new DatabaseManager(true);
     }
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function gatherContexts(BeforeScenarioScope $scope): void
     {
         $environment = $scope->getEnvironment();
@@ -40,52 +40,40 @@ class FeatureContext implements Context
         $this->minkContext = $environment->getContext(MinkContext::class);
     }
 
-    /**
-     * @BeforeScenario @reloadDbWithTestData
-     */
+    #[BeforeScenario('@reloadDbWithTestData')]
     public function beforeScenarioReloadDatabase(): void
     {
         $this->databaseManager->reloadDatabase();
     }
 
-    /**
-     * @BeforeScenario @clearAllMailInscriptionAttachments
-     */
+    #[BeforeScenario('@clearAllMailInscriptionAttachments')]
     public function beforeScenarioClearAllMailInscriptionAttachments(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getInscriptionAttachmentDir());
     }
 
-    /**
-     * @BeforeScenario @clearAllSponsorFiles
-     */
+    #[BeforeScenario('@clearAllSponsorFiles')]
     public function beforeScenarioClearAllSponsorFiles(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove(Event::getSponsorFileDir());
     }
 
-    /**
-     * @Given I am logged in as admin and on the Administration
-     */
+    #[Given('I am logged in as admin and on the Administration')]
     public function iAmLoggedInAsAdminAndOnTheAdministration(): void
     {
         $this->iAmLoggedInAsAdmin();
         $this->minkContext->clickLink('Administration');
     }
 
-    /**
-     * @Given I am logged in as admin
-     */
+    #[Given('I am logged in as admin')]
     public function iAmLoggedInAsAdmin(): void
     {
         $this->iAmLoggedInWithTheUserAndThePassword('admin', 'admin');
     }
 
-    /**
-     * @Given I am logged-in with the user :username and the password :password
-     */
+    #[Given('I am logged-in with the user :username and the password :password')]
     public function iAmLoggedInWithTheUserAndThePassword(string $username, string $password): void
     {
         $this->minkContext->visitPath('/admin/login');
@@ -96,9 +84,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then I submit the form with name :formName
      * @throws ExpectationException
      */
+    #[Then('I submit the form with name :formName')]
     public function submitFormWithName(string $formName): void
     {
         $form = $this->minkContext->getSession()->getPage()->find('xpath', "//form[@name='$formName']");
@@ -113,9 +101,7 @@ class FeatureContext implements Context
         $form->submit();
     }
 
-    /**
-     * @Then simulate the Paybox callback
-     */
+    #[Then('simulate the Paybox callback')]
     public function simulateThePayboxCallback(): void
     {
         $url = $this->minkContext->getSession()->getCurrentUrl();
@@ -128,9 +114,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then The :field field should only contain the follow values :expectedValuesJson
      * @throws ExpectationException
      */
+    #[Then('The :field field should only contain the follow values :expectedValuesJson')]
     public function selectHasValues(string $field, string $expectedValuesJson): void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
@@ -156,9 +142,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then The :field field should have the following selected value :expectedValue
      * @throws ExpectationException
      */
+    #[Then('The :field field should have the following selected value :expectedValue')]
     public function selectHasForCurrentSelectedValue(string $field, string $expectedValue): void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
@@ -181,9 +167,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then The :field field should have the following selected text :expectedValue
      * @throws ExpectationException
      */
+    #[Then('The :field field should have the following selected text :expectedValue')]
     public function selectHasForCurrentSelectedText(string $field, string $expectedValue): void
     {
         $node = $this->minkContext->assertSession()->fieldExists($field);
@@ -207,35 +193,33 @@ class FeatureContext implements Context
 
 
     /**
-     * @Then the response header :arg1 should equal :arg2
      * @throws ExpectationException
      */
+    #[Then('the response header :arg1 should equal :arg2')]
     public function assertResponseHeaderEquals(string $headerName, string $expectedValue): void
     {
         $this->minkContext->assertSession()->responseHeaderEquals($headerName, $expectedValue);
     }
 
     /**
-     * @Then the response header :arg1 should match :arg2
      * @throws ExpectationException
      */
+    #[Then('the response header :arg1 should match :arg2')]
     public function assertResponseHeaderMatch(string $headerName, string $regExpExpectedValue): void
     {
         $this->minkContext->assertSession()->responseHeaderMatches($headerName, $regExpExpectedValue);
     }
 
-    /**
-     * @Then /^the json response has the key "(?P<key>[^"]*)" with value "(?P<value>(?:[^"]|\\")*)"$/
-     */
+    #[Then('/^the json response has the key "(?P<key>[^"]*)" with value "(?P<value>(?:[^"]|\\\\")*)"$/')]
     public function assertResponseHasJsonKeyAndValue(string $key, string $value): void
     {
         $this->minkContext->assertResponseContains(sprintf('"%s":"%s"', $key, $value));
     }
 
     /**
-     * @Then the current URL should match :arg1
      * @throws ExpectationException
      */
+    #[Then('the current URL should match :arg1')]
     public function assertCurrentUrlContains(string $regex): void
     {
         $currentUrl = $this->minkContext->getSession()->getCurrentUrl();
@@ -249,9 +233,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When I follow the button of tooltip :arg1
      * @throws ExpectationException
      */
+    #[When('I follow the button of tooltip :arg1')]
     public function clickLinkOfTooltip(string $tooltip): void
     {
         $link = $this->minkContext->getSession()->getPage()->find('css', sprintf('a[data-tooltip="%s"]', $tooltip));
@@ -267,9 +251,7 @@ class FeatureContext implements Context
     }
 
 
-    /**
-     * @BeforeScenario @clearEmails
-     */
+    #[BeforeScenario]
     public function clearEmails(): void
     {
         $ch = curl_init();
@@ -288,9 +270,9 @@ class FeatureContext implements Context
 
 
     /**
-     * @Then I should only receive the following emails:
      * @throws ExpectationException
      */
+    #[Then('I should only receive the following emails:')]
     public function theFollowingEmailsShouldBeReceived(TableNode $expectedEmails): void
     {
         $expectedEmailsArray = [];
@@ -326,9 +308,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then the checksum of the attachment :filename of the message of id :id should be :md5sum
      * @throws ExpectationException
      */
+    #[Then('the checksum of the attachment :filename of the message of id :id should be :md5sum')]
     public function theChecksumOfTheAttachmentOfTheMessageOfIdShouldBe(string $filename, string $id, string $md5sum): void
     {
         $infos = json_decode(file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.json'), true);
@@ -359,9 +341,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then the plain text content of the message of id :id should be :
      * @throws ExpectationException
      */
+    #[Then('the plain text content of the message of id :id should be :')]
     public function thePlainTextContentOfTheMessageOfIdShouldBe(string $id, PyStringNode $expectedContent): void
     {
         $content = file_get_contents(self::MAILCATCHER_URL . '/messages/' . $id . '.plain');
@@ -381,9 +363,7 @@ class FeatureContext implements Context
         }
     }
 
-    /**
-     * @When I parse the pdf downloaded content
-     */
+    #[When('I parse the pdf downloaded content')]
     public function iParseThePdfContent(): void
     {
         $pageContent = $this->minkContext->getSession()->getPage()->getContent();
@@ -399,9 +379,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then The page :page of the PDF should contain :content
      * @throws ExpectationException
      */
+    #[Then('The page :page of the PDF should contain :content')]
     public function thePageOfThePdfShouldContain(string $page, string $expectedContent): void
     {
         $pageContent = $this->pdfPages[$page] ?? null;
@@ -415,9 +395,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then The page :page of the PDF should not contain :content
      * @throws ExpectationException
      */
+    #[Then('The page :page of the PDF should not contain :content')]
     public function thePageOfThePdfShouldNotContain(string $page, string $expectedContent): void
     {
         if (!isset($this->pdfPages[$page])) {
@@ -438,9 +418,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then the checksum of the response content should be :md5
      * @throws ExpectationException
      */
+    #[Then('the checksum of the response content should be :md5')]
     public function checksumOfTheResponseContentShouldBe(string $expectedChecksum): void
     {
         $content = $this->minkContext->getSession()->getPage()->getContent();
@@ -455,17 +435,13 @@ class FeatureContext implements Context
         }
     }
 
-    /**
-     * @Then print last PDF content
-     */
+    #[Then('print last PDF content')]
     public function printLastPDFResponse(): void
     {
         echo implode("######\n", $this->pdfPages);
     }
 
-    /**
-     * @Then print last response headers
-     */
+    #[Then('print last response headers')]
     public function printLastResponseHeaders(): void
     {
         $headers = [];
@@ -478,9 +454,7 @@ class FeatureContext implements Context
         echo implode("\n", $headers);
     }
 
-    /**
-     * @When I request a password reset for :arg1
-     */
+    #[When('I request a password reset for :arg1')]
     public function iRequestAPasswordReset(string $arg1): void
     {
         $this->minkContext->iAmOnHomepage();
@@ -494,9 +468,7 @@ class FeatureContext implements Context
         $this->minkContext->assertPageContainsText("Votre demande a été prise en compte. Si un compte correspond à cet email vous recevez un nouveau mot de passe rapidement.");
     }
 
-    /**
-     * @Then I should receive an email
-     */
+    #[Then('I should receive an email')]
     public function iShouldReceiveAnEmail(): void
     {
         $content = file_get_contents(self::MAILCATCHER_URL . '/messages');
@@ -510,9 +482,7 @@ class FeatureContext implements Context
         }
     }
 
-    /**
-     * @Then the email should contain a full URL starting with :arg1
-     */
+    #[Then('the email should contain a full URL starting with :arg1')]
     public function theEmailShouldContainAFullUrlStartingWith(string $arg1): void
     {
         $content = file_get_contents(self::MAILCATCHER_URL . '/messages');

@@ -326,7 +326,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:
-        enable_annotations: true
+        enable_attributes: true
         email_validation_mode: html5
     #serializer:      { enable_annotations: true }
     annotations: true

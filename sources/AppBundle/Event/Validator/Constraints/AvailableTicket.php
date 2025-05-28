@@ -6,9 +6,7 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class AvailableTicket extends Constraint
 {
     public $message = 'This ticket is not available anymore.';

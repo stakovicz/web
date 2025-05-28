@@ -6,9 +6,7 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class EarlyBirdTicket extends Constraint
 {
     public $message = 'You can only order one early bird ticket "{{ ticket_pretty_name }}".';

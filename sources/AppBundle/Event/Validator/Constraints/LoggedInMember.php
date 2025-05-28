@@ -6,10 +6,7 @@ namespace AppBundle\Event\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class LoggedInMember
- * @Annotation
- */
+#[\Attribute]
 class LoggedInMember extends Constraint
 {
     public $messageNotLoggedIn = 'You must be connected to order this ticket.';

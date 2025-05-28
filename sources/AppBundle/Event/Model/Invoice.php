@@ -112,13 +112,12 @@ class Invoice implements NotifyPropertyInterface
 
     /**
      * @var Ticket[]
-     * @AfupAssert\CorporateMember(groups={"corporate"})
-     * @AfupAssert\TicketsCfpSubmitter()
-     * @AfupAssert\EarlyBirdTicket()
      */
+    #[AfupAssert\EarlyBirdTicket]
+    #[AfupAssert\TicketsCfpSubmitter]
+    #[AfupAssert\CorporateMember(groups: ["corporate"])]
     #[Assert\Valid]
     private array $tickets = [];
-
 
     /**
      * @return string
