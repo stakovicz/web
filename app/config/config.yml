@@ -329,7 +329,7 @@ framework:
         enable_attributes: true
         email_validation_mode: html5
     #serializer:      { enable_annotations: true }
-    annotations: true
+    annotations: false
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
