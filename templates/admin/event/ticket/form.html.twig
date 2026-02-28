@@ -60,7 +60,7 @@
 
     <div class="ui segment">
         <h2 class="ui header">Transports</h2>
-        {% if form.ticket.transportMode %}
+        {% if event.transportInformationEnabled %}
             {{ form_row(form.ticket.transportMode) }}
             {{ form_row(form.ticket.transportDistance) }}
         {% else %}
