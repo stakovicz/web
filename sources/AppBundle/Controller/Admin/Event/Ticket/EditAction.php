@@ -56,7 +56,6 @@ final class EditAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             ['ticket' => $ticket, 'invoice' => $invoice] = $form->getData();
 
-            $invoice->setStatus($ticket->getInvoiceStatus());
             $invoice->setStatus($ticket->getStatus());
 
             $this->ticketRepository->save($ticket);
