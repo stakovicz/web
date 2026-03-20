@@ -8,7 +8,6 @@ Ce document contient des instructions sur la mise en place d'une instance de dé
 2. [Installation](#installation)
    - [Variables d'environnement](#variables-denvironnement)
    - [Options Docker](#options-docker)
-   - [Processeurs ARM](#processeurs-arm)
 3. [Base de données](#base-de-données)
 4. [Tests](#tests)
    - [Behat](#behat)
@@ -62,19 +61,6 @@ Le fichier `compose.override.yml` est créé automatiquement à l'installation d
 Par exemple, les ports utilisés pour le site et mailcatcher peuvent être modifiés dans ce fichier.
 
 La variable d'environnement `DOCKER_UP_OPTIONS` permet de passer des options à la commande `docker compose up` (via `make docker-up`).
-
-### Processeurs ARM
-
-Pour faire fonctionner les images des bases de données (site et tests) sur un processeur ARM (par exemple sur Mac) il
-faut ajouter une surcharge dans le fichier `compose.override.yml` :
-
-```yaml
-services:
-  db:
-    platform: linux/amd64
-  dbtest:
-    platform: linux/amd64
-```
 
 ## Base de données
 
