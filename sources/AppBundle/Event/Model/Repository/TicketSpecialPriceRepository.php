@@ -80,6 +80,7 @@ class TicketSpecialPriceRepository extends Repository implements MetadataInitial
             ->addField([
                 'columnName' => 'id',
                 'fieldName' => 'id',
+                'primary' => true,
                 'type' => 'int',
             ])
             ->addField([

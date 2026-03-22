@@ -21,3 +21,17 @@ Feature: Administration - Évènements - Tokens Visiteurs
     # Lien d'un token
     And I follow "Lien"
     Then I should see "Spécial Forum * 2€ TTC"
+
+  @reloadDbWithTestData
+  Scenario: Prolonger la validité d'un token visiteur
+    Given I am logged in as admin and on the Administration
+    And I follow "Tokens visiteurs"
+    # Ajout d'un token
+    When I fill in "ticket_special_price[price]" with "2"
+    And I fill in "ticket_special_price[description]" with "Token visiteur de test"
+    And I press "Enregistrer"
+    Then I should see "Le token a été enregistré"
+    # Prolongation du token
+    And I should see tooltip "Prolonger la validité de 3 jours"
+    When I follow the button of tooltip "Prolonger la validité de 3 jours"
+    Then I should see "La validité du token a été prolongée de 3 jours."

@@ -15,6 +15,7 @@
             <th>Date de début</th>
             <th>Date de fin</th>
             <th>Utilisé ?</th>
+            <th></th>
             <th>Lien</th>
         </thead>
         <tbody>
@@ -33,6 +34,13 @@
                     {% else %}
                         <span class="ui red label">non</span>
                     {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_event_special_price_extend', {'id': row.special_price.id}) }}"
+                       data-tooltip="Prolonger la validité de {{ extend_days }} jours"
+                       class="ui icon button">
+                        <i class="clock outline icon"></i>
+                    </a>
                 </td>
                 <td><a href="{{ path('ticket', {'eventSlug' : event.path, 'token': row.special_price.token  }) }}">Lien</a></td>
 
