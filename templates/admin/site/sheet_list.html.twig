@@ -33,6 +33,8 @@
                         Nom
                     </a>
                 </th>
+                <th>Début publication</th>
+                <th>Fin publication</th>
                 <th class="center aligned">
                     <a href="{{ path('admin_site_rubriques_list', {'sort': 'etat' , 'direction' : ((direction == 'asc' and sort == 'date') ? 'desc': 'asc')}) }}">
                         Etat
@@ -58,6 +60,8 @@
                         <br/><img src="../../templates/site/images/{{ sheet.image }}" alt="{{ sheet.image_alt|default('') }}" width="125" />
                     {% endif %}
                 </td>
+                <td>{% if sheet.date_debut_publication is not null %}{{ sheet.date_debut_publication|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if sheet.date_fin_publication is not null %}{{ sheet.date_fin_publication|date('d-m-Y') }}{% endif %}</td>
                 <td class="center aligned">
                     {% if sheet.etat == 1 %}
                         <a class="ui orange label">En ligne</a>

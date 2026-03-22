@@ -14,6 +14,23 @@ Feature: Administration - Partie Site
     Then the response status code should be 403
 
   @reloadDbWithTestData
+  Scenario: Ajout d'une feuille avec des dates de publication
+    Given I am logged in as admin and on the Administration
+    And I follow "Feuilles"
+    When I follow "Ajouter"
+    Then I should see "Ajouter une feuille"
+    And I should see "Date de début de publication"
+    And I should see "Date de fin de publication"
+    And I fill in "sheet[name]" with "Feuille avec dates"
+    And I fill in "sheet[link]" with "http://lien"
+    And I fill in "sheet[publicationStart]" with "2026-03-01"
+    And I fill in "sheet[publicationEnd]" with "2027-12-31"
+    And I press "Ajouter"
+    Then I should see "Liste des feuilles"
+    And the ".content table" element should contain "01-03-2026"
+    And the ".content table" element should contain "31-12-2027"
+
+  @reloadDbWithTestData
   Scenario: Ajout/modification/suppression d'une feuille
     Given I am logged in as admin and on the Administration
     And I follow "Feuilles"

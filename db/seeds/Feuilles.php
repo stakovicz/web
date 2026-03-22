@@ -131,6 +131,28 @@ class Feuilles extends AbstractSeed
                 'alt' => 'Membres AFUP, profitez du meilleur de PHP et soyez à jour sur son actualité : abonnez-vous à notre newsletter La Veille de l’AFUP. Progrès du langage, conseils de spécialistes, nouvelles versions, l’AFUP fait la veille pour vous et vous l’envoie par mail.',
                 'etat' => 1,
             ],
+            [
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Feuille publication passée',
+                'lien' => '/feuille-publication-passee',
+                'etat' => 1,
+                'date_fin_publication' => strtotime('-1 day'),
+            ],
+            [
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Feuille publication future',
+                'lien' => '/feuille-publication-future',
+                'etat' => 1,
+                'date_debut_publication' => strtotime('+1 year'),
+            ],
+            [
+                'id_parent' => Feuille::ID_FEUILLE_HEADER,
+                'nom' => 'Feuille publication courante',
+                'lien' => '/feuille-publication-courante',
+                'etat' => 1,
+                'date_debut_publication' => strtotime('-1 year'),
+                'date_fin_publication' => strtotime('+10 years'),
+            ],
         ];
 
         $data = array_merge($data, $this->prepareFeuilles($this->getFooter(), Feuille::ID_FEUILLE_FOOTER));
