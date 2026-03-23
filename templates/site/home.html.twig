@@ -1,5 +1,28 @@
 {% extends 'site/base.html.twig' %}
 
+{% block metas %}
+    {{ parent() }}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "AFUP",
+        "alternateName": "Association Française des Utilisateurs de PHP",
+        "url": "https://afup.org",
+        "logo": "https://afup.org/templates/site/img/logo-afup.svg",
+        "description": "L'AFUP, Association Française des Utilisateurs de PHP, est au cœur de la communauté PHP depuis 2000. Elle vise à favoriser l'échange d'expertises et la diffusion des connaissances.",
+        "foundingDate": "2000",
+        "sameAs": [
+            "https://www.linkedin.com/company/afup",
+            "https://mastodon.online/@afup",
+            "https://bsky.app/profile/afup.org",
+            "https://www.instagram.com/afup_php/",
+            "https://www.youtube.com/c/afupPHP"
+        ]
+    }
+    </script>
+{% endblock %}
+
 {% import _self as home_macros %}
 
 {% macro home_feuille(feuille) %}
