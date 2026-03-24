@@ -38,14 +38,14 @@ class TicketEventType extends AbstractType
                 'label' => $options['has_prices_defined_with_vat'] ? 'Montant TTC' : 'Montant HT',
             ])
             ->add('dateStart', DateTimeType::class, [
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank(),
                 ],
                 'label' => 'Date de début',
             ])
             ->add('dateEnd', DateTimeType::class, [
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank(),
                 ],
