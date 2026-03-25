@@ -28,8 +28,8 @@ class Tarif extends AbstractSeed
         'day' => 'one,two',
         'cfp_submitter_only' => false,
     ];
-    public const TYPE_ORGANIZATION =
-        [
+    public const TYPE_ORGANIZATION
+        = [
             'id' => 9,
             'technical_name' => 'AFUP_FORUM_ORGANISATION',
             'pretty_name' => 'Organisation',

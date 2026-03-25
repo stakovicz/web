@@ -73,7 +73,12 @@ class SheetRepository extends Repository implements MetadataInitializer
          * @var SelectInterface $queryBuilder
          */
         $queryBuilder = $this->getQueryBuilder(self::QUERY_SELECT);
-        $queryBuilder->cols(['*'])->from('afup_site_feuille')->where('id_parent = :parentId')->where('etat = 1');
+        $queryBuilder->cols(['*'])
+        ->from('afup_site_feuille')
+        ->where('id_parent = :parentId')
+        ->where('etat = 1')
+        ->where('(date_debut_publication IS NULL OR date_debut_publication <= UNIX_TIMESTAMP())')
+        ->where('(date_fin_publication IS NULL OR date_fin_publication >= UNIX_TIMESTAMP())');
 
         return $queryBuilder;
     }
@@ -124,6 +129,34 @@ class SheetRepository extends Repository implements MetadataInitializer
         ->addField([
             'columnName' => 'date',
             'fieldName' => 'creationDate',
+            'type' => 'datetime',
+            'serializer_options' => [
+                'unserialize' => [
+                    'unSerializeUseFormat' => true,
+                    'format' => 'U',
+                ],
+                'serialize' => [
+                    'format' => 'U',
+                ],
+            ],
+        ])
+        ->addField([
+            'columnName' => 'date_debut_publication',
+            'fieldName' => 'publicationStart',
+            'type' => 'datetime',
+            'serializer_options' => [
+                'unserialize' => [
+                    'unSerializeUseFormat' => true,
+                    'format' => 'U',
+                ],
+                'serialize' => [
+                    'format' => 'U',
+                ],
+            ],
+        ])
+        ->addField([
+            'columnName' => 'date_fin_publication',
+            'fieldName' => 'publicationEnd',
             'type' => 'datetime',
             'serializer_options' => [
                 'unserialize' => [

@@ -25,14 +25,14 @@ final readonly class MeetupClient
     /**
      * @return Meetup[]
      */
-    public function getEvents(): array
+    public function getEvents(?int $quantityOfPastEvents = null): array
     {
         $response = $this->httpClient->request('POST', '/gql-ext', [
             'body' => json_encode([
                 'query' => $this->getEventsQuery(),
                 'variables' => [
                     'quantityUpcoming' => self::QUANTITY_UPCOMING_EVENTS,
-                    'quantityPast' => self::QUANTITY_PAST_EVENTS,
+                    'quantityPast' => $quantityOfPastEvents ?? self::QUANTITY_PAST_EVENTS,
                 ],
             ]),
         ]);
@@ -56,10 +56,8 @@ final readonly class MeetupClient
                 $meetup->setDescription($edge->node->description);
                 $meetup->setDate($edge->node->dateTime);
                 $meetup->setAntenneName($nameAntenne);
-
-                if (($edge->node->venues[0] ?? null) !== null) {
-                    $meetup->setLocation($edge->node->venues[0]->name);
-                }
+                $meetup->setLocation($edge->node->venue->name);
+                $meetup->setPhotoUrl($edge->node->displayPhoto->standardUrl);
 
                 $meetups[] = $meetup;
             }
@@ -93,7 +91,8 @@ fragment EventFragment on Event {
     title
     description
     dateTime
-    venues { name }
+    venue { name }
+    displayPhoto { standardUrl }
 }
 
 fragment GroupFragment on Group {

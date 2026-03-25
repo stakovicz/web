@@ -61,6 +61,12 @@ admin_event_special_price:
   path: /special_price
   defaults: {_controller: AppBundle\Controller\Admin\Event\SpecialPriceAction}
 
+admin_event_special_price_extend:
+  path: /special_price/{id}/extend
+  defaults: {_controller: AppBundle\Controller\Admin\Event\ExtendSpecialPriceAction}
+  requirements:
+    id: \d+
+
 admin_event_prices:
   path: /prices
   defaults: {_controller: AppBundle\Controller\Admin\Event\PricesAction }

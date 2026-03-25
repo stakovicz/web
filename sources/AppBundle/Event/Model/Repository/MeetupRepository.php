@@ -7,6 +7,7 @@ namespace AppBundle\Event\Model\Repository;
 use AppBundle\Antennes\Antenne;
 use AppBundle\Event\Model\Meetup;
 use Aura\SqlQuery\Common\SelectInterface;
+use CCMBenchmark\Ting\Repository\CollectionInterface;
 use CCMBenchmark\Ting\Repository\HydratorSingleObject;
 use CCMBenchmark\Ting\Repository\Metadata;
 use CCMBenchmark\Ting\Repository\MetadataInitializer;
@@ -41,6 +42,23 @@ class MeetupRepository extends Repository implements MetadataInitializer
             ])
             ->query($this->getCollection(new HydratorSingleObject()))
             ->first();
+    }
+
+    public function findAllForAntenne(Antenne $antenne): ?CollectionInterface
+    {
+        /** @var SelectInterface $qb */
+        $qb = $this->getQueryBuilder(self::QUERY_SELECT);
+        $qb
+            ->from('afup_meetup m')
+            ->cols(['m.*'])
+            ->where('m.antenne_name = :name')
+        ;
+
+        return $this->getPreparedQuery($qb->getStatement())
+            ->setParams([
+                'name' => $antenne->code,
+            ])
+            ->query($this->getCollection(new HydratorSingleObject()));
     }
 
     /**
@@ -88,6 +106,11 @@ class MeetupRepository extends Repository implements MetadataInitializer
             ->addField([
                 'columnName' => 'antenne_name',
                 'fieldName' => 'antenneName',
+                'type' => 'string',
+            ])
+            ->addField([
+                'columnName' => 'photo_url',
+                'fieldName' => 'photoUrl',
                 'type' => 'string',
             ]);
 

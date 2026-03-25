@@ -113,6 +113,25 @@ class SheetType extends AbstractType
                 ],
             ])
 
+            ->add('publicationStart', DateType::class, [
+                'required' => false,
+                'label' => 'Date de début de publication',
+                'input' => 'datetime',
+                'years' => range(2001, date('Y') + 5),
+                'constraints' => [
+                    new Assert\Type("datetime"),
+                ],
+            ])
+            ->add('publicationEnd', DateType::class, [
+                'required' => false,
+                'label' => 'Date de fin de publication',
+                'input' => 'datetime',
+                'years' => range(2001, date('Y') + 5),
+                'constraints' => [
+                    new Assert\Type("datetime"),
+                ],
+            ])
+
             ->add('position', ChoiceType::class, [
                 'required' => false,
                 'label' => 'Position',

@@ -19,11 +19,11 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 readonly class RegistrationsExportGenerator
 {
     public function __construct(
-        private OfficeFinder      $officeFinder,
+        private OfficeFinder $officeFinder,
         private SeniorityComputer $seniorityComputer,
-        private TicketRepository  $ticketRepository,
+        private TicketRepository $ticketRepository,
         private InvoiceRepository $invoiceRepository,
-        private UserRepository    $userRepository,
+        private UserRepository $userRepository,
     ) {}
 
     public function export(Event $event, \SplFileObject $toFile): void
@@ -55,14 +55,18 @@ readonly class RegistrationsExportGenerator
         }
     }
 
-    /**
-     * @return \Generator
-     */
-    protected function getFromRegistrationsOnEvent(Event $event)
+    protected function getFromRegistrationsOnEvent(Event $event): \Generator
     {
-        $tickets = $this->ticketRepository->getByEvent($event);
+        $aggregates = $this->ticketRepository->getByEventWithAll(
+            event: $event,
+            search: null,
+            sortKey: 'date',
+            sortDirection: 'desc',
+        );
 
-        foreach ($tickets as $ticket) {
+        foreach ($aggregates as $aggregate) {
+            $ticket = $aggregate->ticket;
+            $ticketType = $aggregate->ticketType;
             $status = $ticket->getStatus();
             if (
                 in_array($status, [Ticket::STATUS_CANCELLED, Ticket::STATUS_ERROR, Ticket::STATUS_DECLINED])
@@ -94,7 +98,7 @@ readonly class RegistrationsExportGenerator
                 'nom' => $ticket->getLastname(),
                 'societe' => $invoice->getCompany(),
                 'tags' => $this->extractAndCleanTags($ticket->getComments()),
-                'type_pass' => $this->getTypePass($ticket),
+                'type_pass' => $this->getTypePass($ticketType),
                 'email' => $ticket->getEmail(),
                 'member_since' => null !== $user ? $this->computeSeniority($user) : null,
                 'office' => $office,
