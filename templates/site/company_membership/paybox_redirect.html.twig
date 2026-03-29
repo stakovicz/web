@@ -1,4 +1,18 @@
 {% extends 'site/base.html.twig' %}
+
+{% block google_analytics %}
+    {% embed 'google_analytics.html.twig' %}
+        {% block google_analytics_gtag %}
+            {% include 'event/ticket/google_analytics_paybox.js.twig' with {'payboxResponse': payboxResponse, 'items': [
+                {
+                    item_id: "001",
+                    item_name: "Cotisation"
+                }
+            ]} only %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
 {% block inner_content %}
     <div class="col-md-8">
         <h2>Paiement de votre cotisation</h2>

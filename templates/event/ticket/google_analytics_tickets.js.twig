@@ -1,0 +1,18 @@
+window.gtag("event", "purchase", {
+    transaction_id: "{{ invoice.reference }}",
+    value: {{ invoice.amount }},
+    tax: 0,
+    shipping: 0,
+    currency: "EUR",
+    items: [
+    {% for ticket in invoice.tickets %}
+        {
+            item_id: "{{ ticket.id }}",
+            item_name: "{{ ticket.ticketEventType.ticketType.prettyName }}",
+            item_category: "ticket",
+            price: {{ ticket.amount }},
+            quantity: 1
+        }{{ not loop.last ? ',' : '' }}
+    {% endfor %}
+    ]
+});

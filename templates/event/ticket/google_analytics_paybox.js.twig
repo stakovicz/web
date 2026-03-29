@@ -1,0 +1,10 @@
+{% if payboxResponse.successful %}
+window.gtag("event", "purchase", {
+    transaction_id: "{{ payboxResponse.cmd }}",
+    value: {{ payboxResponse.total/100 }},
+    tax: 0,
+    shipping: 0,
+    currency: "EUR",
+    items: {{ items|json_encode()|raw }}
+});
+{% endif %}

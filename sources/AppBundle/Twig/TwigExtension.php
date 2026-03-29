@@ -16,9 +16,9 @@ class TwigExtension extends AbstractExtension implements GlobalsInterface
     public function __construct(
         private readonly Parsedown $parsedown,
         private readonly Parsedown $emailParsedown,
-        #[Autowire('%google_analytics_enabled%')]
-        private readonly string $googleAnalyticsEnabled,
-        #[Autowire('%google_analytics_id%')]
+        #[Autowire(env: 'bool:GOOGLE_ANALYTICS_ENABLED')]
+        private readonly bool $googleAnalyticsEnabled,
+        #[Autowire(env: 'GOOGLE_ANALYTICS_ID')]
         private readonly string $googleAnalyticsId,
     ) {}
 

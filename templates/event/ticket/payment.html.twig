@@ -9,7 +9,13 @@
 {% endblock %}
 
 {% block google_analytics %}
-    {% include 'google_analytics.html.twig' %}
+    {% embed 'google_analytics.html.twig' %}
+        {% block google_analytics_gtag %}
+            {% if invoice.isFree %}
+                {% include 'event/ticket/google_analytics_tickets.js.twig' with {'invoice': invoice, 'tickets': tickets} only %}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block content %}
@@ -56,52 +62,4 @@
         </div>
         {% endif %}
     </div>
-
-    {% autoescape 'js' %}
-        <!-- Google Code for Inscription evenement Conversion Page -->
-        <script type="text/javascript">
-            /* <![CDATA[ */
-            var google_conversion_id = 878368884;
-            var google_conversion_language = "fr";
-            var google_conversion_format = "3";
-            var google_conversion_color = "ffffff";
-            var google_conversion_label = "HBjSCKivn2oQ9LDrogM";
-            var google_conversion_value = {{ invoice.amount }};
-            var google_conversion_currency = "EUR";
-            var google_remarketing_only = false;
-            /* ]]> */
-        </script>
-        <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
-        </script>
-        <noscript>
-            <div style="display:inline;">
-                <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/878368884/?value={{ invoice.amount }}&amp;currency_code=EUR&amp;label=HBjSCKivn2oQ9LDrogM&amp;guid=ON&amp;script=0"/>
-            </div>
-        </noscript>
-
-        <script>
-            // This purchase event uses a different transaction ID
-            // from the previous purchase event so Analytics
-            // doesn't deduplicate the events.
-            // Learn more: https://support.google.com/analytics/answer/12313109
-            gtag("event", "purchase", {
-                transaction_id: "{{ invoice.reference }}",
-                value: {{ invoice.amount }},
-                tax: 0,
-                shipping: 0,
-                currency: "EUR",
-                items: [
-                    {% for ticket in tickets %}
-                    {
-                        item_id: "{{ invoice.reference }}",
-                        item_name: "{{ ticket.ticketEventType.ticketType.prettyName }}",
-                        index: {{ loop.index }},
-                        price: {{ ticket.amount }},
-                        quantity: 1
-                    },
-                    {% endfor %}
-                ]
-            });
-        </script>
-    {% endautoescape %}
 {% endblock %}
